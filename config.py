@@ -1,4 +1,4 @@
-# Configuration file for WebSocket & API Monitor dsadsadsdsad
+# Configuration file for WebSocket & API Monitor
 
 # WebSocket endpoints to monitor
 WEBSOCKET_ENDPOINTS = {
