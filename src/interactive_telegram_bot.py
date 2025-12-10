@@ -2415,7 +2415,8 @@ def main():
         """Start monitoring for restored sessions without individual notifications"""
         await asyncio.sleep(2)  # Wait for bot to fully start
         
-        # Send test message to configured CHAT_ID from .env
+        # Send test message to configured CHAT_ID from .env (always, not just for restored sessions)
+        print("🧪 Starting test message send...")
         await bot.send_test_message_to_configured()
         
         if bot.active_sessions:
@@ -2436,31 +2437,32 @@ def main():
             if restored_count > 0:
                 print(f"✅ Processed {restored_count} restored sessions - monitoring active")
     
-    # Schedule startup for restored sessions
+    # Schedule startup for restored sessions and test message
     async def startup_callback(context):
         await start_monitoring_for_restored()
     
-    if bot.active_sessions:
-        try:
-            if application.job_queue:
-                application.job_queue.run_once(startup_callback, when=2)
-            else:
-                # Fallback: use threading timer if JobQueue not available
-                import threading
-                def delayed_startup():
-                    import time
-                    time.sleep(2)
-                    import asyncio
-                    loop = asyncio.new_event_loop()
-                    asyncio.set_event_loop(loop)
-                    loop.run_until_complete(start_monitoring_for_restored())
-                
-                startup_thread = threading.Thread(target=delayed_startup, daemon=True)
-                startup_thread.start()
-                print("📢 Using fallback startup method (no JobQueue)")
-        except Exception as e:
-            print(f"❌ Error scheduling notifications: {e}")
-            print("📢 Users will need to check their status manually")
+    # Always run startup callback (for test message and restored sessions)
+    try:
+        if application.job_queue:
+            application.job_queue.run_once(startup_callback, when=2)
+            print("📢 Scheduled startup callback (test message + restored sessions)")
+        else:
+            # Fallback: use threading timer if JobQueue not available
+            import threading
+            def delayed_startup():
+                import time
+                time.sleep(2)
+                import asyncio
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(start_monitoring_for_restored())
+            
+            startup_thread = threading.Thread(target=delayed_startup, daemon=True)
+            startup_thread.start()
+            print("📢 Using fallback startup method (no JobQueue) - test message will be sent")
+    except Exception as e:
+        print(f"❌ Error scheduling startup: {e}")
+        print("📢 Test message and restored sessions will not be processed automatically")
     
     # Setup signal handlers for graceful shutdown
     import signal
