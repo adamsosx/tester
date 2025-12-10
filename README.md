@@ -1,6 +1,6 @@
 # WebSocket & API Monitoring Bot
 
-Bot do monitorowania połączeń WebSocket i endpointów API w czasie rzeczywistym.
+Bot for monitoring WebSocket connections and API endpoints in real-time.
 
 ## Funkcje
 
@@ -8,7 +8,7 @@ Bot do monitorowania połączeń WebSocket i endpointów API w czasie rzeczywist
   - Price WebSocket (`wss://price.outlight.fun/ws`)
   - Sauron Socket.IO (`wss://prod.api.sauron.outlight.fun/socket.io/`)
 
-- **Monitorowanie API**: Sprawdzanie endpointów co 30 sekund
+- **API Monitoring**: Checking endpoints every 60 seconds
   - `GET /api/channels`
   - `GET /api/tokens/recent`
   - `GET /api/tokens/most-called`
