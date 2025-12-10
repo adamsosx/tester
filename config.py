@@ -1,4 +1,4 @@
-# Configuration file for WebSocket & API Monitor Ostatnie
+# Configuration file for WebSocket & API Monitor
 
 # WebSocket endpoints to monitor
 WEBSOCKET_ENDPOINTS = {
@@ -24,7 +24,7 @@ API_CONFIG = {
         "/api/tokens/recent", 
         "/api/tokens/most-called"
     ],
-    "check_interval": 30,  # seconds
+    "check_interval": 60,  # seconds - increased for better performance
     "timeout": 10  # seconds
 }
 
@@ -32,6 +32,6 @@ API_CONFIG = {
 LOG_CONFIG = {
     "show_timestamps": True,
     "use_colors": True,
-    "log_level": "INFO"
+    "log_level": "DEBUG"  # Changed to DEBUG for better troubleshooting
 }
 
